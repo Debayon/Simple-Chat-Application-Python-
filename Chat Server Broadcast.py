@@ -11,15 +11,17 @@ def thread_handler(c, addr):        #, current_thread, threads
     byte = msg.encode()
     c.send(byte)
 
-    while (True):
-        byte = c.recv(1024)
-        client_message = byte.decode()
-        for i in sockets:
-            #print(i)
-            if(i != c):
-                print(i != c)
-                i.send(byte)
-
+    try:
+        while (True):
+            byte = c.recv(1024)
+            client_message = byte.decode()
+            for i in sockets:
+                #print(i)
+                if(i != c):
+                    print(i != c)
+                    i.send(byte)
+    except ConnectionResetError:
+        c.close()
 
 
 
