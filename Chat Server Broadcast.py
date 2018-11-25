@@ -13,14 +13,23 @@ def thread_handler(c, addr):        #, current_thread, threads
 
     try:
         while (True):
-            print(len(threads))
+            #print("Number of Threads:",len(threads))
+            #print("Number of Sockets:",len(sockets))
             byte = c.recv(1024)
             client_message = byte.decode()
+            i = 0
+            #for i in range(0, len(sockets)):
             for i in sockets:
                 #print(i)
                 if(i != c):
-                    print(i != c)
-                    i.send(byte)
+                    #print(i != c)
+                    try:
+                        i.send(byte)
+                    except OSError:
+                        lock.acquire()
+                        sockets.pop(sockets.index(i))
+                        socket_index -= 1
+                        lock.release()
     except ConnectionResetError:
         c.close()
 
