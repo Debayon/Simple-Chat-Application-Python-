@@ -13,6 +13,7 @@ def thread_handler(c, addr):        #, current_thread, threads
 
     try:
         while (True):
+            print(len(threads))
             byte = c.recv(1024)
             client_message = byte.decode()
             for i in sockets:
